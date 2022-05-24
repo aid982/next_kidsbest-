@@ -1,61 +1,21 @@
 import type { NextPage } from 'next'
-import { gql } from "@apollo/client";
-import client from "../apollo-client";
 import { HomePageProps,product_type,product_size } from '../utility/interfaces';
 import HomeContainer from '../containers/HomeContainer';
+import {graphQLClient,queryClient} from "../graphql-client";
+
+import { getSdk, ProductEntity, SizeEntity} from "../src/generated/graphql";
 
 
 export async function getStaticProps() {
-  const { data } = await client.query({
-    query: gql`query HomeQuery {
-      sizes {
-        data {     
-           attributes {
-            name,       
-          }
-        }
-      }
-      products {
-        data { 
-          id,     
-          attributes {        
-            name,
-            price,
-            featured,
-            forBoys,
-            forGirls,
-            code,
-            product_sizes {
-              data {
-                id,
-                attributes {
-                  size {
-                    data {
-                      attributes {
-                        name
-                      }
-                    }
-                  }
-                  qty
-                  
-                  
-                }
-              }
-            }
-            
-            
-          }
-        }
-      }
-     
-    }`,
+  const { HomeQuery } = getSdk(graphQLClient);
+  const data = await queryClient.fetchQuery(["data"],() => HomeQuery())
 
-  });
+  console.log('data',data);
 
-  const tmp_sizes = data.sizes.data;
-  const sizes = tmp_sizes.map((el: any) => ({ title: el.attributes.name, checked: false }));
+  const tmp_sizes = data.sizes?.data as SizeEntity[];
+  const sizes = tmp_sizes.map((el: SizeEntity) => ({ title: el.attributes?.name, checked: false }));
 
-  const tmp_products = data.products.data;
+  const tmp_products = data.products?.data as ProductEntity[];
 
 
   const products = tmp_products.map((el: any) => {
@@ -97,8 +57,7 @@ export async function getStaticProps() {
     props: {
       sizes,
       products
-
-    },
+    },   
   };
 }
 

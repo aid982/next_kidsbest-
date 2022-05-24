@@ -1,0 +1,42 @@
+query HomeQuery {
+      sizes {
+        data {     
+           attributes {
+            name,       
+          }
+        }
+      }
+      products {
+        data { 
+          id,     
+          attributes {        
+            name,
+            price,
+            featured,
+            forBoys,
+            forGirls,
+            code,
+            product_sizes {
+              data {
+                id,
+                attributes {
+                  size {
+                    data {
+                      attributes {
+                        name
+                      }
+                    }
+                  }
+                  qty
+                  
+                  
+                }
+              }
+            }
+            
+            
+          }
+        }
+      }
+     
+    }

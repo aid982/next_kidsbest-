@@ -2,7 +2,7 @@ import { ShoppingBasketRounded } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React from 'react'
 import { GlobalContext } from '../context/GlobalContext';
-import { product_type } from '../utility/intrerfaces'
+import { product_type } from '../utility/interfaces'
 import styles from '../styles/Product.module.css'
 import Image from 'next/image';
 

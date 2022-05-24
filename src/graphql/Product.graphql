@@ -1,0 +1,30 @@
+query Product($id: ID) {
+      product(id: $id) {
+        data {
+          id
+          attributes {
+            name
+            price
+            featured
+            forBoys
+            forGirls
+            code
+            product_sizes {
+              data {
+                id
+                attributes {
+                  size {
+                    data {
+                      attributes {
+                        name
+                      }
+                    }
+                  }
+                  qty
+                }
+              }
+            }
+          }
+        }
+      }
+    }
