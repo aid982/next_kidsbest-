@@ -64,7 +64,7 @@ export const getStaticProps = async (context: { params: { id: any } }) => {
   });
 
 
-  const tmp_products = data.product.data.attributes;
+  const tmp_products = data.product.data.attributes;  
   const tmp_sizes = data.product.data.attributes.product_sizes.data;
   tmp_sizes.map((el:any)=>{
 
