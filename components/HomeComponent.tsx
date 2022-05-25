@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Card, Image, Text, Title, List, ListItem } from "@mantine/core";
+import { Grid, Card, Image, Text, Title, List, ListItem,Checkbox,Divider } from "@mantine/core";
 
 import { HomePageProps } from '../utility/interfaces';
 
@@ -14,6 +14,23 @@ interface HomeComponentProps extends HomePageProps {
   handleCheckboxSizes: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
 }
+const drawer = (props:any) => (
+  <div>
+    
+    <Divider />
+    <Text align='center'>Розміри</Text>
+    <List>
+      {props.sizes.map((size:any) => (
+        <ListItem  key={size.title}>
+          <Checkbox id={size.title} checked={size.checked} onChange={props.handleCheckboxSizes} />
+
+        </ListItem>
+      ))}
+    </List>
+    <Divider />
+ 
+  </div>
+);
 
 
 export default function HomeComponent(props: HomeComponentProps) {  

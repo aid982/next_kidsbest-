@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GlobalContext } from '../context/GlobalContext';
-import { HomePageProps, filter_type, product_type } from '../utility/intrerfaces';
+import { HomePageProps, filter_type, product_type } from '../utility/interfaces';
 import { useRouter } from 'next/router';
 import HomeComponent from '../components/HomeComponent';
 
@@ -50,11 +50,11 @@ export default function HomeContainer(props: HomePageProps) {
         let outputElement = true;
         let wasSomeFilters = false;
         let someFiltersisActive = false;
-        sizes.map(size_el=>{
+        sizes.map((size_el:any)=>{
           if(size_el.checked) {
             wasSomeFilters = true;
             if(product_el.sizes.length>0) {             
-              product_el.sizes.map(product_size=>{
+              product_el.sizes.map((product_size:any)=>{
                 if(product_size===size_el.title) someFiltersisActive = true;
               })             
             }
@@ -75,7 +75,7 @@ export default function HomeContainer(props: HomePageProps) {
 
 
   const handleCheckboxSizes = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSizes(sizes.map((el) => {
+    setSizes(sizes.map((el:any) => {
       if (el.title === event.target.id) {
         el.checked = event.target.checked
       }
