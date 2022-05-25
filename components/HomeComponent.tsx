@@ -42,12 +42,11 @@ export default function HomeComponent(props: HomeComponentProps) {
             <Link href={'/product/' + item.id} key={item.code}>
               <Card>
                 <Card.Section>
-                  <Image src={'/../img/_' + item.code + '_.jpg'} alt={item.name} />
+                  <Image src={'/../img/_' + item.code + '_.jpg'} alt={item.name} width={300} height={375}/>
                 </Card.Section>
                 <Title order={3}>{item.name}</Title>
                 <Text>
-                   {item.price}
-                  
+                   {item.price}                  
                 </Text>
               </Card>
             </Link>

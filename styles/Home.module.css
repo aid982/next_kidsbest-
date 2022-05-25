@@ -1,9 +1,7 @@
 .ImageList {
   position: relative;
   padding: 0;
-  display: block;
-  margin-left: 5px;
-  margin-top: 70px;
+  display: block; 
   background-color: aliceblue;
   
 }
