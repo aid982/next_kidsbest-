@@ -8,47 +8,35 @@ import {
   Text,
   Title,
   Box,
+  List,
+  ListItem,
+  Checkbox,
   MediaQuery,
   Burger,
   useMantineTheme,
 } from "@mantine/core";
 import { Home, DogBowl } from "tabler-icons-react";
+import { GlobalContext } from "../context/GlobalContext";
 
-type Props = { 
+type Props = {
   children: JSX.Element,
 };
 
-export default function Layout({ children }:Props) {
+
+export default function Layout({ children }: Props) {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const { mobileOpen, toggleMobileOpen} = React.useContext(GlobalContext);
 
   return (
     <div>
       <Head>
-        <title>Oregon Humane Adoptable Dogs</title>
+        <title>Kidsbest</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <AppShell
         padding="md"
         navbarOffsetBreakpoint="sm"
-        fixed
-        navbar={
-          <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            hidden={!opened}
-            width={{ sm: 200 }}
-          >
-            <Link href="/" passHref>
-              <Box sx={{ display: "flex" }}>
-                <Home />
-                <Title order={5} ml={10}>
-                  Home
-                </Title>
-              </Box>
-            </Link>
-          </Navbar>
-        }
+        fixed        
         header={
           <Header
             height={60}
@@ -63,8 +51,8 @@ export default function Layout({ children }:Props) {
             >
               <MediaQuery largerThan="sm" styles={{ display: "none" }}>
                 <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
+                  opened={mobileOpen}
+                  onClick={toggleMobileOpen}
                   size="sm"
                   color={theme.colors.gray[3]}
                   mr="xl"
@@ -72,7 +60,7 @@ export default function Layout({ children }:Props) {
               </MediaQuery>
               <DogBowl />
               <Text ml={10} size="md">
-                Oregon Humane Adoptable Dogs
+                Kidsbest
               </Text>
             </div>
           </Header>

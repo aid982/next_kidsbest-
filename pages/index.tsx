@@ -4,6 +4,8 @@ import HomeContainer from '../containers/HomeContainer';
 import {graphQLClient,queryClient} from "../graphql-client";
 
 import { getSdk, ProductEntity, SizeEntity} from "../src/generated/graphql";
+import React from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 
 
 export async function getStaticProps() {
@@ -63,9 +65,15 @@ export async function getStaticProps() {
 
 
 const Home: NextPage<HomePageProps> = ({ sizes, products }) => {
+
+  //const { dispatchSize } = React.useContext(GlobalContext);
+
+  //console.log(dispatchSize);
+
+//  dispatchSize({type:'INIT_SIZES',data:sizes});
+
   return (
     <HomeContainer sizes={sizes} products={products} />
-
   )
 }
 
