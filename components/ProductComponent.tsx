@@ -1,5 +1,7 @@
-import { ShoppingBasketRounded } from '@mui/icons-material';
-import { Button } from '@mui/material';
+
+import { ShoppingCart} from "tabler-icons-react";
+
+import { Button} from "@mantine/core";
 import React from 'react'
 import { GlobalContext } from '../context/GlobalContext';
 import { product_type } from '../utility/interfaces'
@@ -40,7 +42,7 @@ export default function ProductComponent({ product }: Props) {
         <h1>{product.name}</h1>
         <h1>{product.price}</h1>
         <h1>{/*product.sizes.map((size)=>(<div key={product.id+size}>{size}</div>))*/}</h1>
-        <Button variant="contained" endIcon={<ShoppingBasketRounded />} onClick={handleAddToCart}>
+        <Button  rightIcon={<ShoppingCart/>} onClick={handleAddToCart}>
           Добавить
         </Button>
       </div>
