@@ -50,12 +50,12 @@ export default function HomeContainer(props: HomePageProps) {
         let outputElement = true;
         let wasSomeFilters = false;
         let someFiltersisActive = false;
-        sizes.map((size_el:any)=>{
+        sizes.map((size_el:filter_type)=>{
           if(size_el.checked) {
             wasSomeFilters = true;
             if(product_el.sizes.length>0) {             
-              product_el.sizes.map((product_size:any)=>{
-                if(product_size===size_el.title) someFiltersisActive = true;
+              product_el.sizes.map((product_size:{name:string, qty:number})=>{
+                if(product_size.name===size_el.title) someFiltersisActive = true;
               })             
             }
           }

@@ -1,5 +1,6 @@
 import { createContext, Dispatch, useEffect, useReducer, useState } from "react";
 import { cartReducer } from "../reducers/cartReducer";
+
 import { productInCart } from "../utility/interfaces";
 
 
@@ -9,10 +10,11 @@ export type GlobalCtxInterface = {
     toggleMobileOpen: () => void;
     productsInCart: productInCart[];
     dispatch: Dispatch<{ type: any; data: productInCart | productInCart[]|string }>;
+  
 }
 
 
-export const GlobalContext = createContext<GlobalCtxInterface>({ mobileOpen: false, toggleMobileOpen: () => { }, productsInCart: [], dispatch: () => { } });
+export const GlobalContext = createContext<GlobalCtxInterface>({ mobileOpen: false, toggleMobileOpen: () => { }, productsInCart: [], dispatch: () => { }});
 
 interface GlobalContextProviderProps {
     children?: JSX.Element | JSX.Element[];
@@ -23,7 +25,6 @@ const GlobalContextProvider: React.FunctionComponent<GlobalContextProviderProps>
     const [productsInCart, dispatch] = useReducer(cartReducer, [], () => {
         return [];
     });
-
 
 
     const toggleMobileOpen = () => {
