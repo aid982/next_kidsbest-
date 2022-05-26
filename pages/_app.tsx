@@ -3,32 +3,35 @@ import type { AppProps } from 'next/app';
 import '../styles/globals.css';
 import Layout from '../components/Layout';
 import GlobalContextProvider from '../context/GlobalContext';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from '../graphql-client';
 interface MyAppProps extends AppProps {
- 
+
 }
 
 
 
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
-  const { Component,  pageProps } = props;
+  const { Component, pageProps } = props;
 
-   //const { dispatchSize } = React.useContext(GlobalContext);
+  //const { dispatchSize } = React.useContext(GlobalContext);
 
-  console.log('props',pageProps.sizes);
+  console.log('props', pageProps.sizes);
 
-//  dispatchSize({type:'INIT_SIZES',data:sizes});
+  //  dispatchSize({type:'INIT_SIZES',data:sizes});
 
-  
+
 
   return (
 
-   
-        <GlobalContextProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </GlobalContextProvider>
-    
+    <QueryClientProvider client={queryClient}>
+      <GlobalContextProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </GlobalContextProvider>
+    </QueryClientProvider>
+
 
   );
 };

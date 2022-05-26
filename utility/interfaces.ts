@@ -14,7 +14,7 @@ export type product_type = {
     featured:boolean,
     forBoys:boolean,
     forGirls:boolean,
-    sizes:{name:string, qty:number}[]
+    product_sizes:product_size[]
 
 }
 export type productInCart = {

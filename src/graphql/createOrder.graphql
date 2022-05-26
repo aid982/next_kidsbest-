@@ -1,0 +1,7 @@
+mutation createOrder($date:DateTime,$products:JSON,$client:ID) {
+  createOrder(data:{products:$products,date:$date,client:$client,publishedAt:$date}) {
+    data { 
+      id
+     }
+  }
+}

@@ -1,0 +1,7 @@
+mutation createClient($name:String,$phone:String,$date:DateTime){
+  createClient(data:{name:$name,phone:$phone,publishedAt:$date}) {
+    data {
+      id
+    }
+  }
+}

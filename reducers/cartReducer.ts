@@ -1,12 +1,18 @@
+import { graphQLClient, queryClient } from "../graphql-client";
+import { CreateOrderDocument, getSdk } from "../src/generated/graphql";
 import { productInCart, product_type } from "../utility/interfaces";
 
 
 
-export const cartReducer = (state: productInCart[], action: { type: any; data: productInCart | productInCart[] | string }) => {
+export const cartReducer =  (state: productInCart[], action: { type: string; data: productInCart | productInCart[] | string }) => {
   console.log('PrevState', state);
   console.log('Action', action);
 
   switch (action.type) {
+    case 'CREATE_ORDER':
+      
+      return state;
+      
     case 'INIT_CART': return [...action.data as productInCart[]]
     case 'ADD_PRODUCT_TO_CART':
       let newValue = true;

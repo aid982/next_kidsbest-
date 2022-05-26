@@ -1233,6 +1233,24 @@ export type ProductQueryVariables = Exact<{
 
 export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeRelationResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null } | null }> } | null } | null } | null } | null };
 
+export type CreateClientMutationVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+}>;
+
+
+export type CreateClientMutation = { __typename?: 'Mutation', createClient?: { __typename?: 'ClientEntityResponse', data?: { __typename?: 'ClientEntity', id?: string | null } | null } | null };
+
+export type CreateOrderMutationVariables = Exact<{
+  date?: InputMaybe<Scalars['DateTime']>;
+  products?: InputMaybe<Scalars['JSON']>;
+  client?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'OrderEntityResponse', data?: { __typename?: 'OrderEntity', id?: string | null } | null } | null };
+
 
 export const HomeQueryDocument = gql`
     query HomeQuery {
@@ -1305,6 +1323,26 @@ export const ProductDocument = gql`
   }
 }
     `;
+export const CreateClientDocument = gql`
+    mutation createClient($name: String, $phone: String, $date: DateTime) {
+  createClient(data: {name: $name, phone: $phone, publishedAt: $date}) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export const CreateOrderDocument = gql`
+    mutation createOrder($date: DateTime, $products: JSON, $client: ID) {
+  createOrder(
+    data: {products: $products, date: $date, client: $client, publishedAt: $date}
+  ) {
+    data {
+      id
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1318,6 +1356,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Product(variables?: ProductQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ProductQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ProductQuery>(ProductDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Product', 'query');
+    },
+    createClient(variables?: CreateClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateClientMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateClientMutation>(CreateClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createClient', 'mutation');
+    },
+    createOrder(variables?: CreateOrderMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateOrderMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrderMutation>(CreateOrderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createOrder', 'mutation');
     }
   };
 }

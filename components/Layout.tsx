@@ -14,9 +14,12 @@ import {
   MediaQuery,
   Burger,
   useMantineTheme,
+  Button,
 } from "@mantine/core";
-import { Home, DogBowl } from "tabler-icons-react";
+import { ShoppingCart, DogBowl } from "tabler-icons-react";
 import { GlobalContext } from "../context/GlobalContext";
+
+import styles from '../styles/Layout.module.css'
 
 type Props = {
   children: JSX.Element,
@@ -25,7 +28,7 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const theme = useMantineTheme();
-  const { mobileOpen, toggleMobileOpen} = React.useContext(GlobalContext);
+  const { mobileOpen, toggleMobileOpen, productsInCart } = React.useContext(GlobalContext);
 
   return (
     <div>
@@ -36,7 +39,9 @@ export default function Layout({ children }: Props) {
       <AppShell
         padding="md"
         navbarOffsetBreakpoint="sm"
-        fixed        
+        fixed
+
+
         header={
           <Header
             height={60}
@@ -46,23 +51,42 @@ export default function Layout({ children }: Props) {
               color: "white",
             })}
           >
-            <div
-              style={{ display: "flex", alignItems: "center", height: "100%" }}
-            >
-              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <Burger
-                  opened={mobileOpen}
-                  onClick={toggleMobileOpen}
-                  size="sm"
-                  color={theme.colors.gray[3]}
-                  mr="xl"
-                />
-              </MediaQuery>
-              <DogBowl />
-              <Text ml={10} size="md">
-                Kidsbest
-              </Text>
+            <div >
+              <div
+                style={{ display: "flex", alignItems: "center", height: "100%" }}
+              >
+                <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                  <Burger
+                    opened={mobileOpen}
+                    onClick={toggleMobileOpen}
+                    size="sm"
+                    color={theme.colors.gray[3]}
+                    mr="xl"
+                  />
+                </MediaQuery>
+                <Link href={'/'}>
+                  <div className={styles.HeaderStyle}>
+                    <DogBowl />
+                    <Text ml={10} size="md">
+                      Kidsbest
+                    </Text>
+                  </div>
+                </Link>
+                <Link href={"/cart"}>
+                  <Button className={styles.Cart}>
+                    <Text>
+                      {"(" + productsInCart.length + ")"}
+                    </Text>
+                    <ShoppingCart />
+                  </Button>
+                </Link>
+              </div>
+              <div>
+
+
+              </div>
             </div>
+
           </Header>
         }
         styles={(theme) => ({
