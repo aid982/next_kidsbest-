@@ -12,7 +12,6 @@ export const getStaticPaths = async () => {
   const tmp_products = data.products?.data as ProductEntity[];
 
   const paths = tmp_products.map((product: any) => ({ params: { id: product.id.toString() } }));
-  console.log('paths', paths)
   return {
     paths,
     fallback: 'blocking'
