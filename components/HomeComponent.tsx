@@ -36,8 +36,7 @@ const drawer = (props: any) => (
 
 
 export default function HomeComponent(props: HomeComponentProps) {
-  console.log('sizes',props.sizes);
-  const { mobileOpen, toggleMobileOpen } = React.useContext(GlobalContext);
+  const { mobileOpen } = React.useContext(GlobalContext);
   return (
     <div>
       <Navbar
