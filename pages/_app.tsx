@@ -3,8 +3,9 @@ import type { AppProps } from 'next/app';
 import '../styles/globals.css';
 import Layout from '../components/Layout';
 import GlobalContextProvider from '../context/GlobalContext';
-import { QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClientProvider } from 'react-query';
 import { queryClient } from '../graphql-client';
+import { ReactQueryDevtools } from 'react-query/devtools'
 interface MyAppProps extends AppProps {
 
 }
@@ -25,11 +26,14 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   return (
 
     <QueryClientProvider client={queryClient}>
-      <GlobalContextProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </GlobalContextProvider>
+      <Hydrate state={pageProps.dehydratedState}>
+        <GlobalContextProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </GlobalContextProvider>
+      </Hydrate>
+      <ReactQueryDevtools />
     </QueryClientProvider>
 
 
