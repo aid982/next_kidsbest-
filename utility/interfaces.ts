@@ -35,5 +35,6 @@ export interface HomePageProps {
 
 export interface ProductPageProps {
     product:product_type
+    id:string
    
 }
