@@ -1,7 +1,22 @@
-mutation createOrder($date:DateTime,$products:JSON,$client:ID) {
-  createOrder(data:{products:$products,date:$date,client:$client,publishedAt:$date}) {
+mutation createOrder($date:DateTime,$products:JSON,$client:ID,$address:String) {
+  createOrder(data:{products:$products,date:$date,client:$client,publishedAt:$date,address:$address}) {
     data { 
       id
+      attributes {
+        date
+        client {
+          data {
+            id
+            attributes {
+              name
+              phone
+            }
+          }
+        }
+        products       
+        
+        
+      }
      }
   }
 }

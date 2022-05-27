@@ -490,6 +490,7 @@ export type MutationUploadArgs = {
 
 export type Order = {
   __typename?: 'Order';
+  address?: Maybe<Scalars['String']>;
   client?: Maybe<ClientEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']>;
   date?: Maybe<Scalars['DateTime']>;
@@ -516,6 +517,7 @@ export type OrderEntityResponseCollection = {
 };
 
 export type OrderFiltersInput = {
+  address?: InputMaybe<StringFilterInput>;
   and?: InputMaybe<Array<InputMaybe<OrderFiltersInput>>>;
   client?: InputMaybe<ClientFiltersInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
@@ -529,6 +531,7 @@ export type OrderFiltersInput = {
 };
 
 export type OrderInput = {
+  address?: InputMaybe<Scalars['String']>;
   client?: InputMaybe<Scalars['ID']>;
   date?: InputMaybe<Scalars['DateTime']>;
   products?: InputMaybe<Scalars['JSON']>;
@@ -1246,10 +1249,26 @@ export type CreateOrderMutationVariables = Exact<{
   date?: InputMaybe<Scalars['DateTime']>;
   products?: InputMaybe<Scalars['JSON']>;
   client?: InputMaybe<Scalars['ID']>;
+  address?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'OrderEntityResponse', data?: { __typename?: 'OrderEntity', id?: string | null } | null } | null };
+export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'OrderEntityResponse', data?: { __typename?: 'OrderEntity', id?: string | null, attributes?: { __typename?: 'Order', date?: any | null, products?: any | null, client?: { __typename?: 'ClientEntityResponse', data?: { __typename?: 'ClientEntity', id?: string | null, attributes?: { __typename?: 'Client', name?: string | null, phone?: string | null } | null } | null } | null } | null } | null } | null };
+
+export type FindClientQueryVariables = Exact<{
+  phone?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindClientQuery = { __typename?: 'Query', clients?: { __typename?: 'ClientEntityResponseCollection', data: Array<{ __typename?: 'ClientEntity', id?: string | null }> } | null };
+
+export type UpdateClientMutationVariables = Exact<{
+  ID: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateClientMutation = { __typename?: 'Mutation', updateClient?: { __typename?: 'ClientEntityResponse', data?: { __typename?: 'ClientEntity', id?: string | null } | null } | null };
 
 
 export const HomeQueryDocument = gql`
@@ -1333,10 +1352,41 @@ export const CreateClientDocument = gql`
 }
     `;
 export const CreateOrderDocument = gql`
-    mutation createOrder($date: DateTime, $products: JSON, $client: ID) {
+    mutation createOrder($date: DateTime, $products: JSON, $client: ID, $address: String) {
   createOrder(
-    data: {products: $products, date: $date, client: $client, publishedAt: $date}
+    data: {products: $products, date: $date, client: $client, publishedAt: $date, address: $address}
   ) {
+    data {
+      id
+      attributes {
+        date
+        client {
+          data {
+            id
+            attributes {
+              name
+              phone
+            }
+          }
+        }
+        products
+      }
+    }
+  }
+}
+    `;
+export const FindClientDocument = gql`
+    query findClient($phone: String) {
+  clients(filters: {phone: {eq: $phone}}) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export const UpdateClientDocument = gql`
+    mutation updateClient($ID: ID!, $name: String) {
+  updateClient(id: $ID, data: {name: $name}) {
     data {
       id
     }
@@ -1362,6 +1412,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     createOrder(variables?: CreateOrderMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateOrderMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateOrderMutation>(CreateOrderDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createOrder', 'mutation');
+    },
+    findClient(variables?: FindClientQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindClientQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindClientQuery>(FindClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findClient', 'query');
+    },
+    updateClient(variables: UpdateClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateClientMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateClientMutation>(UpdateClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateClient', 'mutation');
     }
   };
 }

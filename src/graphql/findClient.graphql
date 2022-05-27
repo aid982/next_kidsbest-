@@ -1,0 +1,9 @@
+query findClient($phone:String){
+  clients(filters:{phone:{eq:$phone}}) {
+    data {
+      id
+    }
+    
+  }
+  
+}

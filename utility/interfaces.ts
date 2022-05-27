@@ -30,8 +30,7 @@ export type productInCart = {
 export interface HomePageProps {
     sizes: filter_type[]
     products?:product_type[]
-    visible_products?:product_type[]
-    window?: () => Window
+    visible_products?:product_type[]   
 }
 
 export interface ProductPageProps {

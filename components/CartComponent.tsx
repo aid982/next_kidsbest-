@@ -3,10 +3,7 @@ import { GlobalContext } from '../context/GlobalContext';
 import styles from '../styles/Cart.module.css'
 import { ShoppingCartOff } from "tabler-icons-react";
 import { Grid, Box, Card, Image, Avatar, Text, Title, List, ListItem, Checkbox, Divider, Navbar, Button } from "@mantine/core";
-import { getSdk } from '../src/generated/graphql';
-import { graphQLClient, queryClient } from '../graphql-client';
-import { productInCart } from '../utility/interfaces';
-import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 
 
 
@@ -14,18 +11,8 @@ type Props = {}
 
 export default function CartComponent({ }: Props) {
   const { productsInCart, dispatch } = React.useContext(GlobalContext);
-  const { createOrder } = getSdk(graphQLClient);
-  console.log('cl',graphQLClient);
-  
-  const { mutate, isLoading, error } = useMutation((orderData:{}) => 
-    createOrder(orderData), {
-    onSuccess: (data) => {
-      console.log('Mut success', data);
-
-    }
-  });
-
-
+ 
+  const router = useRouter();
 
   const handleRemoveFormCart = (event: React.MouseEvent<HTMLButtonElement>) => {
 
@@ -37,8 +24,13 @@ export default function CartComponent({ }: Props) {
   const handleCreateOrder = (event: React.MouseEvent<HTMLButtonElement>) => {
 
     event.preventDefault();
-    mutate({ date: new Date(),client:"1",products:productsInCart});
-    dispatch({ type: 'CREATE_ORDER', data: "" });
+    router.push({
+      pathname: '/order',
+      })
+
+   // mutate({ date: new Date(),client:"1",products:productsInCart});
+   // dispatch({ type: 'CREATE_ORDER', data: "" });
+
 
   }
 
