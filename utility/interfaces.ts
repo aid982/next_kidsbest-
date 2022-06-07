@@ -14,6 +14,7 @@ export type product_type = {
     featured:boolean,
     forBoys:boolean,
     forGirls:boolean,
+    img:string,
     product_sizes:product_size[]
 
 }
@@ -29,6 +30,7 @@ export type productInCart = {
 
 export interface HomePageProps {
     sizes: filter_type[]
+    categories: filter_type[]
     products?:product_type[]
     visible_products?:product_type[]   
 }
