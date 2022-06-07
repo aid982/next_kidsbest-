@@ -24,7 +24,7 @@ const Home: NextPage<HomePageProps> = () => {
 
 
   return (
-    <HomeContainer sizes={data!.sizes} products={data!.products} />
+    <HomeContainer categories={data!.categories} sizes={data!.sizes} products={data!.products} />
   )
 }
 

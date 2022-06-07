@@ -11,7 +11,7 @@ export const fetchProduct = async (id: string) => {
     const tmp_sizes = data.product!.data!.attributes!.product_sizes!.data as ProductSizeEntity[];
     const sizes = tmp_sizes.map((el: ProductSizeEntity) => {
         return {
-            name: el.attributes!.size!.data[0].attributes!.name as string,
+            name: el.attributes!.size!.data!.attributes!.name as string,
             qty: el.attributes!.qty as number
 
         }

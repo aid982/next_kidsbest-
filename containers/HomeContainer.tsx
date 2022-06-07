@@ -8,6 +8,7 @@ import HomeComponent from '../components/HomeComponent';
 export default function HomeContainer(props: HomePageProps) {
   const { mobileOpen, toggleMobileOpen } = React.useContext(GlobalContext);
   const [sizes, setSizes] = React.useState(props.sizes);
+  const [categories, setCategories] = React.useState(props.categories);
   const [visible_products, setVisible_products] = React.useState(props.products);
   const [pageFirstLoaded, setPageFirstLoaded] = React.useState(true);
   const router = useRouter();
@@ -50,22 +51,22 @@ export default function HomeContainer(props: HomePageProps) {
         let outputElement = true;
         let wasSomeFilters = false;
         let someFiltersisActive = false;
-        sizes.map((size_el:filter_type)=>{
-          if(size_el.checked) {
+        sizes.map((size_el: filter_type) => {
+          if (size_el.checked) {
             wasSomeFilters = true;
-            if(product_el.product_sizes.length>0) {             
-              product_el.product_sizes.map((product_size:{name:string, qty:number})=>{
-                if(product_size.name===size_el.title) someFiltersisActive = true;
-              })             
+            if (product_el.product_sizes.length > 0) {
+              product_el.product_sizes.map((product_size: { name: string, qty: number }) => {
+                if (product_size.name === size_el.title) someFiltersisActive = true;
+              })
             }
           }
 
         });
-        if(wasSomeFilters) {
+        if (wasSomeFilters) {
           outputElement = someFiltersisActive;
         }
 
-        if(outputElement) return {...product_el} 
+        if (outputElement) return { ...product_el }
       }));
     }
 
@@ -75,7 +76,18 @@ export default function HomeContainer(props: HomePageProps) {
 
 
   const handleCheckboxSizes = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSizes(sizes.map((el:any) => {
+    setSizes(sizes.map((el: any) => {
+      if (el.title === event.target.id) {
+        el.checked = event.target.checked
+      }
+      return el;
+    }));
+    updateRoutes();
+
+  }
+
+  const handleCheckboxCategories = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCategories(categories.map((el: any) => {
       if (el.title === event.target.id) {
         el.checked = event.target.checked
       }
@@ -91,15 +103,23 @@ export default function HomeContainer(props: HomePageProps) {
       return results
     }, [])
 
+    var categorie_route = categories.reduce<string[]>((results, item) => {
+      if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
+      return results
+    }, [])
+
     router.push({
       pathname: '/',
-      query: { sizes: size_route }
+      query: {
+        sizes: size_route,
+        categories: categorie_route
+      }
     }, undefined, { shallow: true })
 
   }
 
 
   return (
-    <HomeComponent sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={visible_products} />
+    <HomeComponent categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={visible_products} handleCheckboxCategories={handleCheckboxCategories} />
   );
 }

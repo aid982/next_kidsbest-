@@ -1,42 +1,53 @@
 query HomeQuery {
-      sizes {
-        data {     
-           attributes {
-            name,       
+  categories {
+    data {
+      attributes {
+        title
+      }
+    }
+  }
+  sizes {
+    data {
+      attributes {
+        name
+      }
+    }
+  }
+  products {
+    data {
+      id
+      attributes {
+        name
+        price
+        featured
+        forBoys
+        forGirls
+        code
+        image {
+          data {
+            attributes {
+              url
+              height
+              width
+            }
           }
         }
-      }
-      products {
-        data { 
-          id,     
-          attributes {        
-            name,
-            price,
-            featured,
-            forBoys,
-            forGirls,
-            code,
-            product_sizes {
-              data {
-                id,
-                attributes {
-                  size {
-                    data {
-                      attributes {
-                        name
-                      }
-                    }
+        product_sizes {
+          data {
+            id
+            attributes {
+              size {
+                data {
+                  attributes {
+                    name
                   }
-                  qty
-                  
-                  
                 }
               }
+              qty
             }
-            
-            
           }
         }
       }
-     
     }
+  }
+}

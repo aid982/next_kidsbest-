@@ -6,6 +6,7 @@ import GlobalContextProvider from '../context/GlobalContext';
 import { Hydrate, QueryClientProvider } from 'react-query';
 import { queryClient } from '../graphql-client';
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { MantineProvider } from '@mantine/core';
 interface MyAppProps extends AppProps {
 
 }
@@ -28,13 +29,24 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <GlobalContextProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{
+              breakpoints: {                
+                md: 1500,
+              },
+            }}
+          >
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </MantineProvider>
         </GlobalContextProvider>
+
       </Hydrate>
       <ReactQueryDevtools />
-    </QueryClientProvider>
+    </QueryClientProvider >
 
 
   );

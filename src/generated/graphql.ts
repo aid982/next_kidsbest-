@@ -44,6 +44,63 @@ export type BooleanFilterInput = {
   startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type Category = {
+  __typename?: 'Category';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  products?: Maybe<ProductRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type CategoryProductsArgs = {
+  filters?: InputMaybe<ProductFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type CategoryEntity = {
+  __typename?: 'CategoryEntity';
+  attributes?: Maybe<Category>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type CategoryEntityResponse = {
+  __typename?: 'CategoryEntityResponse';
+  data?: Maybe<CategoryEntity>;
+};
+
+export type CategoryEntityResponseCollection = {
+  __typename?: 'CategoryEntityResponseCollection';
+  data: Array<CategoryEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type CategoryFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<CategoryFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<CategoryFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<CategoryFiltersInput>>>;
+  products?: InputMaybe<ProductFiltersInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type CategoryInput = {
+  products?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type CategoryRelationResponseCollection = {
+  __typename?: 'CategoryRelationResponseCollection';
+  data: Array<CategoryEntity>;
+};
+
 export type Client = {
   __typename?: 'Client';
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -151,7 +208,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Client | I18NLocale | Order | Product | ProductSize | Size | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Category | Client | I18NLocale | Order | Product | ProductSize | Size | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -260,6 +317,7 @@ export type JsonFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCategory?: Maybe<CategoryEntityResponse>;
   createClient?: Maybe<ClientEntityResponse>;
   createOrder?: Maybe<OrderEntityResponse>;
   createProduct?: Maybe<ProductEntityResponse>;
@@ -270,6 +328,7 @@ export type Mutation = {
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteClient?: Maybe<ClientEntityResponse>;
   deleteOrder?: Maybe<OrderEntityResponse>;
   deleteProduct?: Maybe<ProductEntityResponse>;
@@ -291,6 +350,7 @@ export type Mutation = {
   removeFile?: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+  updateCategory?: Maybe<CategoryEntityResponse>;
   updateClient?: Maybe<ClientEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateOrder?: Maybe<OrderEntityResponse>;
@@ -303,6 +363,11 @@ export type Mutation = {
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type MutationCreateCategoryArgs = {
+  data: CategoryInput;
 };
 
 
@@ -343,6 +408,11 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
+};
+
+
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -423,6 +493,12 @@ export type MutationResetPasswordArgs = {
   code: Scalars['String'];
   password: Scalars['String'];
   passwordConfirmation: Scalars['String'];
+};
+
+
+export type MutationUpdateCategoryArgs = {
+  data: CategoryInput;
+  id: Scalars['ID'];
 };
 
 
@@ -560,19 +636,30 @@ export type PaginationArg = {
 
 export type Product = {
   __typename?: 'Product';
+  categories?: Maybe<CategoryRelationResponseCollection>;
   code: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
+  description_meta?: Maybe<Scalars['String']>;
   featured: Scalars['Boolean'];
   forBoys?: Maybe<Scalars['Boolean']>;
   forGirls: Scalars['Boolean'];
   image?: Maybe<UploadFileEntityResponse>;
   keyWords?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  popularity?: Maybe<Scalars['Int']>;
   price?: Maybe<Scalars['Float']>;
   product_sizes?: Maybe<ProductSizeRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type ProductCategoriesArgs = {
+  filters?: InputMaybe<CategoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -602,9 +689,11 @@ export type ProductEntityResponseCollection = {
 
 export type ProductFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<ProductFiltersInput>>>;
+  categories?: InputMaybe<CategoryFiltersInput>;
   code?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
+  description_meta?: InputMaybe<StringFilterInput>;
   featured?: InputMaybe<BooleanFilterInput>;
   forBoys?: InputMaybe<BooleanFilterInput>;
   forGirls?: InputMaybe<BooleanFilterInput>;
@@ -613,6 +702,7 @@ export type ProductFiltersInput = {
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ProductFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ProductFiltersInput>>>;
+  popularity?: InputMaybe<IntFilterInput>;
   price?: InputMaybe<FloatFilterInput>;
   product_sizes?: InputMaybe<ProductSizeFiltersInput>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -620,14 +710,17 @@ export type ProductFiltersInput = {
 };
 
 export type ProductInput = {
+  categories?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   code?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
+  description_meta?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   forBoys?: InputMaybe<Scalars['Boolean']>;
   forGirls?: InputMaybe<Scalars['Boolean']>;
   image?: InputMaybe<Scalars['ID']>;
   keyWords?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  popularity?: InputMaybe<Scalars['Int']>;
   price?: InputMaybe<Scalars['Float']>;
   product_sizes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
@@ -641,27 +734,11 @@ export type ProductRelationResponseCollection = {
 export type ProductSize = {
   __typename?: 'ProductSize';
   createdAt?: Maybe<Scalars['DateTime']>;
-  product?: Maybe<ProductRelationResponseCollection>;
+  product?: Maybe<ProductEntityResponse>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   qty?: Maybe<Scalars['Int']>;
-  size?: Maybe<SizeRelationResponseCollection>;
+  size?: Maybe<SizeEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type ProductSizeProductArgs = {
-  filters?: InputMaybe<ProductFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type ProductSizeSizeArgs = {
-  filters?: InputMaybe<SizeFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProductSizeEntity = {
@@ -695,10 +772,10 @@ export type ProductSizeFiltersInput = {
 };
 
 export type ProductSizeInput = {
-  product?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  product?: InputMaybe<Scalars['ID']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   qty?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  size?: InputMaybe<Scalars['ID']>;
 };
 
 export type ProductSizeRelationResponseCollection = {
@@ -713,6 +790,8 @@ export enum PublicationState {
 
 export type Query = {
   __typename?: 'Query';
+  categories?: Maybe<CategoryEntityResponseCollection>;
+  category?: Maybe<CategoryEntityResponse>;
   client?: Maybe<ClientEntityResponse>;
   clients?: Maybe<ClientEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
@@ -732,6 +811,19 @@ export type Query = {
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
   usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+
+export type QueryCategoriesArgs = {
+  filters?: InputMaybe<CategoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryCategoryArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -902,11 +994,6 @@ export type SizeInput = {
   name?: InputMaybe<Scalars['String']>;
   product_sizes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type SizeRelationResponseCollection = {
-  __typename?: 'SizeRelationResponseCollection';
-  data: Array<SizeEntity>;
 };
 
 export type StringFilterInput = {
@@ -1227,14 +1314,14 @@ export type UsersPermissionsUserRelationResponseCollection = {
 export type HomeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type HomeQueryQuery = { __typename?: 'Query', sizes?: { __typename?: 'SizeEntityResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null, products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeRelationResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null } | null }> } | null } | null }> } | null };
+export type HomeQueryQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', title?: string | null } | null }> } | null, sizes?: { __typename?: 'SizeEntityResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null, products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, height?: number | null, width?: number | null } | null } | null } | null, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null }> } | null };
 
 export type ProductQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeRelationResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null } | null }> } | null } | null } | null } | null };
+export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null } | null } | null };
 
 export type CreateClientMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -1273,6 +1360,13 @@ export type UpdateClientMutation = { __typename?: 'Mutation', updateClient?: { _
 
 export const HomeQueryDocument = gql`
     query HomeQuery {
+  categories {
+    data {
+      attributes {
+        title
+      }
+    }
+  }
   sizes {
     data {
       attributes {
@@ -1290,6 +1384,15 @@ export const HomeQueryDocument = gql`
         forBoys
         forGirls
         code
+        image {
+          data {
+            attributes {
+              url
+              height
+              width
+            }
+          }
+        }
         product_sizes {
           data {
             id

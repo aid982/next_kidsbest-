@@ -33,7 +33,7 @@ type Props = {
 export default function ProductComponent({ product }: Props) {
   const { dispatch, productsInCart } = React.useContext(GlobalContext);
   console.log('Products', product);
-  const selectData = product.product_sizes.map((size)=>({value:size.name,label:size.name,qty:size.qty}))
+  const selectData = product.product_sizes.map((size) => ({ value: size.name, label: size.name, qty: size.qty }))
 
   const handleAddToCart = () => {
 
@@ -52,10 +52,10 @@ export default function ProductComponent({ product }: Props) {
 
   return (
     <div className={styles.Product}>
-      <div className={styles.Image}>
-        <Image src={'/../img/_' + product.code + '_.jpg'} alt={product.code} width={300} height={375} layout="fixed" />
 
-      </div>
+      <Image className={styles.Image} src={'/../img/_' + product.code + '_.jpg'} alt={product.code} width={300} height={375}  layout="fixed" />
+
+
       <div className={styles.Data}>
         <Text>{product.name}</Text>
         <Text>Ціна:{product.price}</Text>
