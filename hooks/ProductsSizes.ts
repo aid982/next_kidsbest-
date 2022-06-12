@@ -1,12 +1,15 @@
 import { graphQLClient } from "../graphql-client";
 import { product_size } from '../utility/interfaces';
-import { CategoryEntity, getSdk, ProductEntity, ProductSizeEntity, SizeEntity } from "../src/generated/graphql";
+import { CategoryEntity, getSdk, PaginationArg, ProductEntity, ProductFiltersInput, ProductSizeEntity, SizeEntity } from "../src/generated/graphql";
 import { useQuery } from "react-query";
 
-export const fetchProductsSizes = async () => {
+export const fetchProductsSizes = async (pagination:PaginationArg,filters:ProductFiltersInput) => {
   const { HomeQuery } = getSdk(graphQLClient);
-  const data = await HomeQuery();
-  console.log('data', data);
+  const data = await HomeQuery({
+    ProductPaginationArg:pagination,
+    Filter:filters       
+  });
+
   const tmp_sizes = data.sizes!.data as SizeEntity[];
   const sizes = tmp_sizes.map((el: SizeEntity) => ({ title: el.attributes!.name, checked: false }));
 
@@ -55,15 +58,27 @@ export const fetchProductsSizes = async () => {
 
     }
   });
+  let paginationData = data.products!.meta.pagination;
 
-
+  
   return {
+    paginationData,
     sizes,
     products,
     categories
   }
 }
 
-export const useProductsSizes = () => {
-  return useQuery(['homePage'], () => fetchProductsSizes())
+export const useProductsSizes = (pagination:PaginationArg,filters:ProductFiltersInput) => {
+  return useQuery(['homePage',pagination.page], () => fetchProductsSizes(pagination,filters))
+}
+
+export const getProductsId =async () => {
+  const {findIdForProduct} = getSdk(graphQLClient);
+
+  const data = await findIdForProduct();
+
+  let productsId =data.products!.data;
+
+  return productsId;
 }

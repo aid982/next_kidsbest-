@@ -6,14 +6,13 @@ import { getSdk, Product as ProductType, ProductEntity, ProductSizeEntity } from
 import { ProductPageProps } from "../../utility/interfaces";
 import { dehydrate, QueryClient } from 'react-query'
 import { fetchProduct, useProduct } from "../../hooks/Product";
-import { fetchProductsSizes } from "../../hooks/ProductsSizes";
+import { fetchProductsSizes, getProductsId } from "../../hooks/ProductsSizes";
 
 const queryClient = new QueryClient()
 
 export const getStaticPaths = async () => {
-  const data = await queryClient.fetchQuery(['homePage'], () => fetchProductsSizes())
-
-  const paths = data.products.map((product: any) => ({ params: { id: product.id.toString() } }));
+  const data = await queryClient.fetchQuery(['productsId'], () => getProductsId())
+  const paths = data.map((product: any) => ({ params: { id: product.id.toString() } }));
   return {
     paths,
     fallback: 'blocking'

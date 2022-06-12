@@ -1,10 +1,17 @@
 .ImageList {  
   display: grid; 
-  grid-template-columns: repeat(4,1fr);
-  
+  grid-template-columns: repeat(4,1fr);  
   gap: 10px;
-  grid-auto-rows:450px;  
-  
+  grid-auto-rows:450px;    
+}
+.Pagination {
+  margin: 10px;
+  padding-top: 10px;
+}
+.sortPagination {
+  padding: 5px;
+  margin-bottom: 5px;
+  width: fit-content;
 }
 .Card {
   background-color:rgb(240, 240, 249);

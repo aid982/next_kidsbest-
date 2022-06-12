@@ -16,14 +16,6 @@ interface MyAppProps extends AppProps {
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
   const { Component, pageProps } = props;
 
-  //const { dispatchSize } = React.useContext(GlobalContext);
-
-  console.log('props', pageProps.sizes);
-
-  //  dispatchSize({type:'INIT_SIZES',data:sizes});
-
-
-
   return (
 
     <QueryClientProvider client={queryClient}>

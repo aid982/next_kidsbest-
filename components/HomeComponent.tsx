@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Card, Text, Title, List, ListItem, Checkbox, Divider, Navbar, Collapse, Button } from "@mantine/core";
+import { Grid, Card, Text, Title, List, ListItem, Checkbox, Divider, Navbar, Collapse, Button, Pagination } from "@mantine/core";
 import Image from 'next/image';
 import { HomePageProps } from '../utility/interfaces';
 
@@ -10,9 +10,10 @@ import { endpoint } from '../graphql-client';
 
 
 
-const drawerWidth = 240;
 interface HomeComponentProps extends HomePageProps {
   mobileOpen: boolean;
+  setPage: (page: number) => void;
+  currentPage:number;
   toggleMobileOpen: () => void;
   handleCheckboxSizes: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxCategories: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -48,7 +49,7 @@ export default function HomeComponent(props: HomeComponentProps) {
         hiddenBreakpoint="sm"
         hidden={!mobileOpen}
         width={{ sm: 200 }}
-      >        
+      >
         <Button variant='outline' onClick={() => setOpenSize((o) => !o)}>
           + Розміри:
         </Button>
@@ -74,24 +75,33 @@ export default function HomeComponent(props: HomeComponentProps) {
         </Collapse>
 
       </Navbar>
-      <div className={styles.ImageList}>
-        {props.visible_products!.map((item, i) => (
-          <Link href={'/product/' + item.id} key={item.code}>
-            <div className={styles.Card}>
-              <div className={styles.Image}>
-                <Image src={'/../img/_' + item.code + '_.jpg'} alt={item.name} width={300} height={375} />
-                { /* <Image src={endpoint+item.img} alt={item.name} width={300} height={375}  />*/}
+      <div className={styles.layout}>
+        <div className={styles.sortPagination}>
+          <Text size='md'>Всього товарів:{props.paginationData.total}</Text>
+        </div>
 
+        <div className={styles.ImageList}>
+          {props.visible_products!.map((item, i) => (
+            <Link href={'/product/' + item.id} key={item.code}>
+              <div className={styles.Card}>
+                <div className={styles.Image}>
+                  <Image src={'/../img/_' + item.code + '_.jpg'} alt={item.name} width={300} height={375} />
+                  { /* <Image src={endpoint+item.img} alt={item.name} width={300} height={375}  />*/}
+
+                </div>
+                <div className={styles.Title}>{item.name}</div>
+                <div className={styles.Price}>
+                  Ціна {item.price} грн.
+                </div>
               </div>
-              <div className={styles.Title}>{item.name}</div>
-              <div className={styles.Price}>
-                Ціна {item.price} грн.
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-        ))}
+          ))}
 
+        </div>
+        <div className={styles.Pagination}>
+          <Pagination page={props.currentPage} onChange={props.setPage}  total={props.paginationData.pageCount} />
+        </div>
       </div>
     </div>
 

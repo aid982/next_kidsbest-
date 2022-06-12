@@ -9,14 +9,18 @@ export default function HomeContainer(props: HomePageProps) {
   const { mobileOpen, toggleMobileOpen } = React.useContext(GlobalContext);
   const [sizes, setSizes] = React.useState(props.sizes);
   const [categories, setCategories] = React.useState(props.categories);
-  const [visible_products, setVisible_products] = React.useState(props.products);
   const [pageFirstLoaded, setPageFirstLoaded] = React.useState(true);
+  const [currentPage,setCurrentPage] = React.useState(props.paginationData.page);
   const router = useRouter();
-
+  const setPage = (page:number)=>{    
+    setCurrentPage(page);
+    console.log('page',page);
+    updateRoutes(page);
+  }
+6
 
   const setFiltersFromQueryRoute = (queryObject: string[] | string, prevState: filter_type[], setStateFunction: Function) => {
-    console.log('State', prevState, queryObject, queryObject.length);
-    const result = prevState.map((state_el: filter_type) => {
+      const result = prevState.map((state_el: filter_type) => {
       let filterActive = false;
       if (Array.isArray(queryObject)) {
         (queryObject as string[]).forEach((query_el) => {
@@ -28,25 +32,23 @@ export default function HomeContainer(props: HomePageProps) {
       if (filterActive) state_el.checked = true;
       return { ...state_el };
     });
-    console.log('newState', result);
+   
     setStateFunction(result);
   }
 
   // set filters from routes 
   React.useEffect(() => {
     const { query } = router;
-    if (query.sizes && pageFirstLoaded) {
-      console.log('pageFirstLoaded', pageFirstLoaded);
+    if (query.sizes && pageFirstLoaded) {    
       setFiltersFromQueryRoute(query.sizes, sizes, setSizes);
       setPageFirstLoaded(false);
     }
 
   }, [router, pageFirstLoaded, sizes]);
 
-  // set filters from routes 
-  React.useEffect(() => {
-    console.log('filter porducts', props.products);
-    if (props.products) {
+  // set filters from routes filters on client side
+  /*React.useEffect(() => {
+      if (props.products) {
       setVisible_products(props.products.filter((product_el: product_type) => {
         let outputElement = true;
         let wasSomeFilters = false;
@@ -72,7 +74,7 @@ export default function HomeContainer(props: HomePageProps) {
 
 
 
-  }, [sizes, props.products]);
+  }, [sizes, props.products]);*/
 
 
   const handleCheckboxSizes = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +84,7 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes();
+    updateRoutes(currentPage);
 
   }
 
@@ -93,11 +95,11 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes();
+    updateRoutes(currentPage);
 
   }
 
-  const updateRoutes = () => {
+  const updateRoutes = (page:number) => {
     var size_route = sizes.reduce<string[]>((results, item) => {
       if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
       return results
@@ -107,19 +109,21 @@ export default function HomeContainer(props: HomePageProps) {
       if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
       return results
     }, [])
+    console.log('page2',page);
 
     router.push({
       pathname: '/',
       query: {
+        page,
         sizes: size_route,
         categories: categorie_route
       }
-    }, undefined, { shallow: true })
+    })
 
   }
 
 
   return (
-    <HomeComponent categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={visible_products} handleCheckboxCategories={handleCheckboxCategories} />
+    <HomeComponent currentPage={currentPage} setPage={setPage} paginationData={props.paginationData} categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={props.products} handleCheckboxCategories={handleCheckboxCategories} />
   );
 }

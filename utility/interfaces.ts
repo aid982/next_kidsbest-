@@ -3,40 +3,47 @@ export type filter_type = {
     checked: boolean
 }
 
-export type product_size =  { name: string,
-    qty:number }
+export type product_size = {
+    name: string,
+    qty: number
+}
 
 export type product_type = {
-    id:string,
+    id: string,
     name: string,
-    price:number,
-    code:string,
-    featured:boolean,
-    forBoys:boolean,
-    forGirls:boolean,
-    img:string,
-    product_sizes:product_size[]
+    price: number,
+    code: string,
+    featured: boolean,
+    forBoys: boolean,
+    forGirls: boolean,
+    img: string,
+    product_sizes: product_size[]
 
 }
 export type productInCart = {
-    id:string,
+    id: string,
     name: string,
-    code:string,
-    price:number,
-    size:string,
-    qty:number
+    code: string,
+    price: number,
+    size: string,
+    qty: number
 }
 
 
 export interface HomePageProps {
+    paginationData: {
+        total: number,
+        page: number,
+        pageCount: number
+    },
     sizes: filter_type[]
     categories: filter_type[]
-    products?:product_type[]
-    visible_products?:product_type[]   
+    products?: product_type[]
+    visible_products?: product_type[]
 }
 
 export interface ProductPageProps {
-    product:product_type
-    id:string
-   
+    product: product_type
+    id: string
+
 }

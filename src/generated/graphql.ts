@@ -1311,10 +1311,14 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
-export type HomeQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type HomeQueryQueryVariables = Exact<{
+  ProductPaginationArg?: InputMaybe<PaginationArg>;
+  Filter?: InputMaybe<ProductFiltersInput>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+}>;
 
 
-export type HomeQueryQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', title?: string | null } | null }> } | null, sizes?: { __typename?: 'SizeEntityResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null, products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, height?: number | null, width?: number | null } | null } | null } | null, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null }> } | null };
+export type HomeQueryQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', title?: string | null } | null }> } | null, sizes?: { __typename?: 'SizeEntityResponseCollection', data: Array<{ __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null }> } | null, products?: { __typename?: 'ProductEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, height?: number | null, width?: number | null } | null } | null } | null, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null }> } | null };
 
 export type ProductQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -1349,6 +1353,11 @@ export type FindClientQueryVariables = Exact<{
 
 export type FindClientQuery = { __typename?: 'Query', clients?: { __typename?: 'ClientEntityResponseCollection', data: Array<{ __typename?: 'ClientEntity', id?: string | null }> } | null };
 
+export type FindIdForProductQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindIdForProductQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null }> } | null };
+
 export type UpdateClientMutationVariables = Exact<{
   ID: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
@@ -1359,7 +1368,7 @@ export type UpdateClientMutation = { __typename?: 'Mutation', updateClient?: { _
 
 
 export const HomeQueryDocument = gql`
-    query HomeQuery {
+    query HomeQuery($ProductPaginationArg: PaginationArg, $Filter: ProductFiltersInput, $sort: [String]) {
   categories {
     data {
       attributes {
@@ -1374,7 +1383,14 @@ export const HomeQueryDocument = gql`
       }
     }
   }
-  products {
+  products(pagination: $ProductPaginationArg, filters: $Filter, sort: $sort) {
+    meta {
+      pagination {
+        total
+        page
+        pageCount
+      }
+    }
     data {
       id
       attributes {
@@ -1487,6 +1503,15 @@ export const FindClientDocument = gql`
   }
 }
     `;
+export const FindIdForProductDocument = gql`
+    query findIdForProduct {
+  products {
+    data {
+      id
+    }
+  }
+}
+    `;
 export const UpdateClientDocument = gql`
     mutation updateClient($ID: ID!, $name: String) {
   updateClient(id: $ID, data: {name: $name}) {
@@ -1518,6 +1543,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     findClient(variables?: FindClientQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindClientQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindClientQuery>(FindClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findClient', 'query');
+    },
+    findIdForProduct(variables?: FindIdForProductQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindIdForProductQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindIdForProductQuery>(FindIdForProductDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findIdForProduct', 'query');
     },
     updateClient(variables: UpdateClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateClientMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateClientMutation>(UpdateClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateClient', 'mutation');
