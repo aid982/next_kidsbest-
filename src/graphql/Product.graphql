@@ -8,6 +8,9 @@ query Product($id: ID) {
             featured
             forBoys
             forGirls
+            description
+            description_meta
+            keyWords        
             code
             product_sizes {
               data {

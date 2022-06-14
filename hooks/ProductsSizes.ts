@@ -45,7 +45,10 @@ export const fetchProductsSizes = async (pagination:PaginationArg,filters:Produc
       img: img,
       forGirls: el.attributes!.forGirls,
       id: el.id as string,
-      product_sizes: sizes_array
+      product_sizes: sizes_array,
+      description:'',
+      keyWords:'',
+      description_meta:'',
     }
   });
 

@@ -11,7 +11,7 @@ type Props = {}
 
 export default function CartComponent({ }: Props) {
   const { productsInCart, dispatch } = React.useContext(GlobalContext);
- 
+
   const router = useRouter();
 
   const handleRemoveFormCart = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,10 +26,10 @@ export default function CartComponent({ }: Props) {
     event.preventDefault();
     router.push({
       pathname: '/order',
-      })
+    })
 
-   // mutate({ date: new Date(),client:"1",products:productsInCart});
-   // dispatch({ type: 'CREATE_ORDER', data: "" });
+    // mutate({ date: new Date(),client:"1",products:productsInCart});
+    // dispatch({ type: 'CREATE_ORDER', data: "" });
 
 
   }
@@ -39,6 +39,8 @@ export default function CartComponent({ }: Props) {
       <Text component="div" weight={10}>
         Товари у корзині:
       </Text>
+
+      <Divider />
 
       {productsInCart.map((product) =>
         <Card key={product.id + product.size} className={styles.CartList} p={10}>

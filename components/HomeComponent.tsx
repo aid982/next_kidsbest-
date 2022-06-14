@@ -1,78 +1,64 @@
 import * as React from 'react';
-import { Grid, Card, Text, Title, List, ListItem, Checkbox, Divider, Navbar, Collapse, Button, Pagination } from "@mantine/core";
+import {  ScrollArea, Text,  List, ListItem, Checkbox, Divider, Navbar, Pagination } from "@mantine/core";
 import Image from 'next/image';
 import { HomePageProps } from '../utility/interfaces';
-
 import styles from '../styles/Home.module.css'
 import Link from 'next/link';
 import { GlobalContext } from '../context/GlobalContext';
-import { endpoint } from '../graphql-client';
+
 
 
 
 interface HomeComponentProps extends HomePageProps {
   mobileOpen: boolean;
+  forBoys:boolean,
+  forGirls:boolean,
   setPage: (page: number) => void;
-  currentPage:number;
+  currentPage: number;
   toggleMobileOpen: () => void;
   handleCheckboxSizes: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCheckboxforBoys: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCheckboxforGirls: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxCategories: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
 }
-const drawer = (props: any) => (
-  <div>
-
-    <Divider />
-    <Text align='center'>Розміри</Text>
-    <List>
-      {props.sizes.map((size: any) => (
-        <ListItem key={size.title}>
-          <Checkbox id={size.title} checked={size.checked} onChange={props.handleCheckboxSizes} />
-
-        </ListItem>
-      ))}
-    </List>
-    <Divider />
-
-  </div>
-);
 
 
 export default function HomeComponent(props: HomeComponentProps) {
-  const { mobileOpen } = React.useContext(GlobalContext);
-  const [openedSize, setOpenSize] = React.useState(false);
-  const [openedCategories, setCategories] = React.useState(false);
+  const { mobileOpen } = React.useContext(GlobalContext);  
   return (
     <div>
       <Navbar
         p="md"
         hiddenBreakpoint="sm"
         hidden={!mobileOpen}
-        width={{ sm: 200 }}
+        width={{ sm: 300 }}
       >
-        <Button variant='outline' onClick={() => setOpenSize((o) => !o)}>
-          + Розміри:
-        </Button>
-        <Collapse in={openedSize}>
+        <Checkbox p={5} label="Для мальчиков" title="Для мальчиков" checked={props.forBoys} onChange={props.handleCheckboxforBoys} />
+        <Checkbox p={5} label="Для девочек" title="Для девочек" checked={props.forGirls} onChange={props.handleCheckboxforGirls} />
+        <Divider/>        
+        <Text>Размеры : </Text>
+        <Navbar.Section mt="xs" grow component={ScrollArea}>
           {props.sizes && props.sizes.map((size: any) => (
 
             <Checkbox p={5} key={size.title} id={size.title} label={size.title} title={size.title} checked={size.checked} onChange={props.handleCheckboxSizes} />
-
-
           ))}
-        </Collapse>
+        </Navbar.Section>
+        <Divider/>
+        <Text>Категории : </Text>
+        <Navbar.Section grow component={ScrollArea}>
 
-        <Button variant='outline' onClick={() => setCategories((o) => !o)}>
-          + Категорії:
-        </Button>
-        <Collapse in={openedCategories}>
+
           {props.categories && props.categories.map((categorie: any) => (
 
             <Checkbox p={5} key={categorie.title} id={categorie.title} label={categorie.title} title={categorie.title} checked={categorie.checked} onChange={props.handleCheckboxCategories} />
 
 
           ))}
-        </Collapse>
+        </Navbar.Section>
+        <Divider/>
+
+
 
       </Navbar>
       <div className={styles.layout}>
@@ -100,7 +86,7 @@ export default function HomeComponent(props: HomeComponentProps) {
 
         </div>
         <div className={styles.Pagination}>
-          <Pagination page={props.currentPage} onChange={props.setPage}  total={props.paginationData.pageCount} />
+          <Pagination page={props.currentPage} onChange={props.setPage} total={props.paginationData.pageCount} />
         </div>
       </div>
     </div>

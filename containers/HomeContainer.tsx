@@ -10,17 +10,27 @@ export default function HomeContainer(props: HomePageProps) {
   const [sizes, setSizes] = React.useState(props.sizes);
   const [categories, setCategories] = React.useState(props.categories);
   const [pageFirstLoaded, setPageFirstLoaded] = React.useState(true);
-  const [currentPage,setCurrentPage] = React.useState(props.paginationData.page);
+  
+
   const router = useRouter();
-  const setPage = (page:number)=>{    
-    setCurrentPage(page);
-    console.log('page',page);
-    updateRoutes(page);
+
+  const setPage = (page: number) => {    
+    updateRoutes(page,props.forGirls,props.forBoys);
   }
-6
+
+  const handleCheckboxforBoys=()=>{    
+    updateRoutes(props.paginationData.page,props.forGirls,!props.forBoys);
+    
+  }
+
+  const handleCheckboxforGirls=()=>{    
+    updateRoutes(props.paginationData.page,!props.forGirls,props.forBoys);
+  }
+  
+  
 
   const setFiltersFromQueryRoute = (queryObject: string[] | string, prevState: filter_type[], setStateFunction: Function) => {
-      const result = prevState.map((state_el: filter_type) => {
+    const result = prevState.map((state_el: filter_type) => {
       let filterActive = false;
       if (Array.isArray(queryObject)) {
         (queryObject as string[]).forEach((query_el) => {
@@ -32,19 +42,25 @@ export default function HomeContainer(props: HomePageProps) {
       if (filterActive) state_el.checked = true;
       return { ...state_el };
     });
-   
+
     setStateFunction(result);
   }
 
   // set filters from routes 
   React.useEffect(() => {
     const { query } = router;
-    if (query.sizes && pageFirstLoaded) {    
+    if (query.sizes && pageFirstLoaded) {
       setFiltersFromQueryRoute(query.sizes, sizes, setSizes);
       setPageFirstLoaded(false);
     }
 
-  }, [router, pageFirstLoaded, sizes]);
+    if (query.categories && pageFirstLoaded) {
+      setFiltersFromQueryRoute(query.categories, categories, setCategories);
+      setPageFirstLoaded(false);
+    }   
+
+
+  }, [router,pageFirstLoaded,categories, sizes]);
 
   // set filters from routes filters on client side
   /*React.useEffect(() => {
@@ -84,7 +100,7 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes(currentPage);
+    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys);
 
   }
 
@@ -95,11 +111,10 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes(currentPage);
-
+    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys);
   }
 
-  const updateRoutes = (page:number) => {
+  const updateRoutes = (page: number,forGirls:boolean,forBoys:boolean) => {
     var size_route = sizes.reduce<string[]>((results, item) => {
       if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
       return results
@@ -109,21 +124,46 @@ export default function HomeContainer(props: HomePageProps) {
       if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
       return results
     }, [])
-    console.log('page2',page);
+
+    type queryType = {
+      page?:number,
+      sizes?: any,
+      categories?: any,
+      forBoys?:boolean,
+      forGirls?:boolean
+
+    }
+    let query:queryType;
+
+    query = {      
+      sizes: size_route,
+      categories: categorie_route,     
+    } 
+    if(page>1) {
+      query.page = page;
+    }
+    if(forBoys) {
+      query.forBoys = true;
+    }
+    if(forGirls) {
+      query.forGirls = true;
+    }
+
+    
 
     router.push({
       pathname: '/',
-      query: {
-        page,
-        sizes: size_route,
-        categories: categorie_route
-      }
+      query,
+     
     })
 
   }
 
 
   return (
-    <HomeComponent currentPage={currentPage} setPage={setPage} paginationData={props.paginationData} categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={props.products} handleCheckboxCategories={handleCheckboxCategories} />
+    <HomeComponent 
+    handleCheckboxforBoys={handleCheckboxforBoys}
+    handleCheckboxforGirls={handleCheckboxforGirls}
+    forBoys={props.forBoys} forGirls={props.forGirls} currentPage={props.paginationData.page} setPage={setPage} paginationData={props.paginationData} categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={props.products} handleCheckboxCategories={handleCheckboxCategories} />
   );
 }

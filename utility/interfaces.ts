@@ -16,6 +16,9 @@ export type product_type = {
     featured: boolean,
     forBoys: boolean,
     forGirls: boolean,
+    description:string,
+    description_meta:string,
+    keyWords:string,        
     img: string,
     product_sizes: product_size[]
 
@@ -36,6 +39,8 @@ export interface HomePageProps {
         page: number,
         pageCount: number
     },
+    forBoys:boolean,
+    forGirls:boolean,
     sizes: filter_type[]
     categories: filter_type[]
     products?: product_type[]

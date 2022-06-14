@@ -1325,7 +1325,7 @@ export type ProductQueryVariables = Exact<{
 }>;
 
 
-export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null } | null } | null };
+export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', name: string, price?: number | null, featured: boolean, forBoys?: boolean | null, forGirls: boolean, description?: string | null, description_meta?: string | null, keyWords?: string | null, code: string, product_sizes?: { __typename?: 'ProductSizeRelationResponseCollection', data: Array<{ __typename?: 'ProductSizeEntity', id?: string | null, attributes?: { __typename?: 'ProductSize', qty?: number | null, size?: { __typename?: 'SizeEntityResponse', data?: { __typename?: 'SizeEntity', attributes?: { __typename?: 'Size', name: string } | null } | null } | null } | null }> } | null } | null } | null } | null };
 
 export type CreateClientMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -1440,6 +1440,9 @@ export const ProductDocument = gql`
         featured
         forBoys
         forGirls
+        description
+        description_meta
+        keyWords
         code
         product_sizes {
           data {
