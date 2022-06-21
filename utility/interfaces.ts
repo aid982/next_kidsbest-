@@ -32,6 +32,11 @@ export type productInCart = {
     qty: number
 }
 
+export type Cart = {
+    totalSum:number,
+    productsInCart:productInCart[];
+}
+
 
 export interface HomePageProps {
     paginationData: {
@@ -39,6 +44,7 @@ export interface HomePageProps {
         page: number,
         pageCount: number
     },
+    sort:string,
     forBoys:boolean,
     forGirls:boolean,
     sizes: filter_type[]

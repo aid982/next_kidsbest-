@@ -3,11 +3,12 @@ import { product_size } from '../utility/interfaces';
 import { CategoryEntity, getSdk, PaginationArg, ProductEntity, ProductFiltersInput, ProductSizeEntity, SizeEntity } from "../src/generated/graphql";
 import { useQuery } from "react-query";
 
-export const fetchProductsSizes = async (pagination:PaginationArg,filters:ProductFiltersInput) => {
+export const fetchProductsSizes = async (pagination:PaginationArg,filters:ProductFiltersInput,sort:string[]) => {
   const { HomeQuery } = getSdk(graphQLClient);
   const data = await HomeQuery({
     ProductPaginationArg:pagination,
-    Filter:filters       
+    Filter:filters,
+    sort       
   });
 
   const tmp_sizes = data.sizes!.data as SizeEntity[];
@@ -72,8 +73,8 @@ export const fetchProductsSizes = async (pagination:PaginationArg,filters:Produc
   }
 }
 
-export const useProductsSizes = (pagination:PaginationArg,filters:ProductFiltersInput) => {
-  return useQuery(['homePage',pagination.page], () => fetchProductsSizes(pagination,filters))
+export const useProductsSizes = (pagination:PaginationArg,filters:ProductFiltersInput,sort:string[]) => {
+  return useQuery(['homePage',pagination.page], () => fetchProductsSizes(pagination,filters,sort))
 }
 
 export const getProductsId =async () => {

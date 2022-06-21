@@ -14,17 +14,21 @@ export default function HomeContainer(props: HomePageProps) {
 
   const router = useRouter();
 
+  const handleChangeSort = (value:string)=> {
+    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys,value);
+  }
+
   const setPage = (page: number) => {    
-    updateRoutes(page,props.forGirls,props.forBoys);
+    updateRoutes(page,props.forGirls,props.forBoys,props.sort);
   }
 
   const handleCheckboxforBoys=()=>{    
-    updateRoutes(props.paginationData.page,props.forGirls,!props.forBoys);
+    updateRoutes(props.paginationData.page,props.forGirls,!props.forBoys,props.sort);
     
   }
 
   const handleCheckboxforGirls=()=>{    
-    updateRoutes(props.paginationData.page,!props.forGirls,props.forBoys);
+    updateRoutes(props.paginationData.page,!props.forGirls,props.forBoys,props.sort);
   }
   
   
@@ -100,7 +104,7 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys);
+    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys,props.sort);
 
   }
 
@@ -111,10 +115,10 @@ export default function HomeContainer(props: HomePageProps) {
       }
       return el;
     }));
-    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys);
+    updateRoutes(props.paginationData.page,props.forGirls,props.forBoys,props.sort);
   }
 
-  const updateRoutes = (page: number,forGirls:boolean,forBoys:boolean) => {
+  const updateRoutes = (page: number,forGirls:boolean,forBoys:boolean,sort:string) => {
     var size_route = sizes.reduce<string[]>((results, item) => {
       if (item.checked) results.push(item.title) // modify is a fictitious function that would apply some change to the items in the array
       return results
@@ -130,15 +134,20 @@ export default function HomeContainer(props: HomePageProps) {
       sizes?: any,
       categories?: any,
       forBoys?:boolean,
-      forGirls?:boolean
+      forGirls?:boolean,
+      sort?:string
 
     }
     let query:queryType;
 
     query = {      
       sizes: size_route,
-      categories: categorie_route,     
+      categories: categorie_route,                 
     } 
+    if(sort!=='price:asc') {
+      query.sort = sort;
+
+    }
     if(page>1) {
       query.page = page;
     }
@@ -147,9 +156,7 @@ export default function HomeContainer(props: HomePageProps) {
     }
     if(forGirls) {
       query.forGirls = true;
-    }
-
-    
+    }    
 
     router.push({
       pathname: '/',
@@ -162,6 +169,8 @@ export default function HomeContainer(props: HomePageProps) {
 
   return (
     <HomeComponent 
+    sort={props.sort}
+    handleChangeSort={handleChangeSort}
     handleCheckboxforBoys={handleCheckboxforBoys}
     handleCheckboxforGirls={handleCheckboxforGirls}
     forBoys={props.forBoys} forGirls={props.forGirls} currentPage={props.paginationData.page} setPage={setPage} paginationData={props.paginationData} categories={categories} sizes={sizes} mobileOpen={mobileOpen} toggleMobileOpen={toggleMobileOpen} handleCheckboxSizes={handleCheckboxSizes} visible_products={props.products} handleCheckboxCategories={handleCheckboxCategories} />

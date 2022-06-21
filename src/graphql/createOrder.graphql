@@ -1,5 +1,5 @@
-mutation createOrder($date:DateTime,$products:JSON,$client:ID,$address:String) {
-  createOrder(data:{products:$products,date:$date,client:$client,publishedAt:$date,address:$address}) {
+mutation createOrder($date:DateTime,$products:JSON,$client:ID,$address:String,$fio:String,$phone:String) {
+  createOrder(data:{products:$products,date:$date,client:$client,publishedAt:$date,address:$address,fio:$fio,phone:$phone}) {
     data { 
       id
       attributes {
@@ -9,7 +9,7 @@ mutation createOrder($date:DateTime,$products:JSON,$client:ID,$address:String) {
             id
             attributes {
               name
-              phone
+              phone              
             }
           }
         }

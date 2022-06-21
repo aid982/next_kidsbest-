@@ -5,12 +5,7 @@ import {
   AppShell,
   Navbar,
   Header,
-  Text,
-  Title,
-  Box,
-  List,
-  ListItem,
-  Checkbox,
+  Text, 
   MediaQuery,
   Burger,
   useMantineTheme,
@@ -28,7 +23,7 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const theme = useMantineTheme();
-  const { mobileOpen, toggleMobileOpen, productsInCart } = React.useContext(GlobalContext);
+  const { mobileOpen, toggleMobileOpen, cart } = React.useContext(GlobalContext);
 
   return (
     <div>
@@ -40,8 +35,6 @@ export default function Layout({ children }: Props) {
         padding="md"
         navbarOffsetBreakpoint="sm"
         fixed
-
-
         header={
           <Header
             height={60}
@@ -66,25 +59,23 @@ export default function Layout({ children }: Props) {
                 </MediaQuery>
                 <Link href={'/'}>
                   <div className={styles.HeaderStyle}>
-                    <DogBowl />
-                    <Text ml={10} size="md">
-                      Kidsbest
+                  <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                    <Text ml={20} size="xl">
+                      Kidsbest   (096-209-01-51)
                     </Text>
+                    </MediaQuery>
                   </div>
                 </Link>
                 <Link href={"/cart"}>
                   <Button className={styles.Cart}>
-                    <Text>
-                      {"(" + productsInCart.length + ")"}
-                    </Text>
                     <ShoppingCart />
+                    <Text>
+                      {"(" + cart.totalSum + " грн.)"}
+                    </Text>
+
                   </Button>
                 </Link>
-              </div>
-              <div>
-
-
-              </div>
+              </div>              
             </div>
 
           </Header>

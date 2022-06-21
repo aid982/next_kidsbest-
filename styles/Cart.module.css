@@ -1,10 +1,9 @@
 .Cart {
-  position: relative; 
-  align-content: center;
+  max-width: 900px;
+  margin: auto;  
  
 }
-.CartList { 
-  
+.CartList {   
   display:flex;  
   flex-direction: row;
   top: 0;
@@ -23,4 +22,8 @@
 }
 .deleteButton {
   margin-left: auto;
+}
+.Total {
+  margin-top: 10px;
+  font-size: larger;
 }

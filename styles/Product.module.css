@@ -1,25 +1,50 @@
 .Product { 
   padding: 5;
+  margin: auto;
   display:grid; 
-  grid-template-columns: 1fr 1fr;  
+  grid-template-columns: 1fr 2fr;  
+  column-gap: 20px;
   align-content: center;
-  margin: 10px auto;
-  max-width: 800px; 
-  
+  margin-left: 10px auto;
+  max-width: 1200px;   
+}
+.Image {  
+  position: relative;
+  height: 750px;  
+  width: 500px;    
+}  
+.RadioGroup {     
+  justify-content: center;        
+  background-color: aqua;
 
-  
 }
 
-.Image {
-  padding: 10px;
-  
-  
+@media  (max-width:800px) {
+  .Product { 
+    padding: 5;    
+    display:block;     
+    margin: 10px auto;
+    max-width: 800px;       
+
+  }  
+  .Image {    
+    height: 375px;  
+    width: 300px;   
+    display: block;    
+    margin: auto;
+  }  
+
+  .RadioGroup {     
+    justify-content: center;        
+
+  }
+  .Data {
+    display: block;
+    margin: 30px auto;
+    padding: auto;    
+    text-align: center;  
+    
+  }
 }
 
-.Data {
-  padding: 10px;
-  
-  
-  
-}
 

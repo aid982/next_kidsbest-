@@ -1,15 +1,19 @@
-import { Box, Button, Checkbox, Group, TextInput } from '@mantine/core';
+import { Box, Button,  Group, LoadingOverlay,TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import React from 'react'
 import NumberFormat from 'react-number-format';
+import styles from '../styles/Order.module.css'
+
 
 
 type Props = {
-    onSubmit:( values:any) => void,
+    onSubmit: (values: any) => void,
+    loading: boolean
 }
 
-export default function OrderComponent({onSubmit }: Props) {
- 
+export default function OrderComponent({ onSubmit, loading }: Props) {
+
+
     const form = useForm({
         initialValues: {
             phone: '',
@@ -27,27 +31,30 @@ export default function OrderComponent({onSubmit }: Props) {
     return (
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <NumberFormat customInput={TextInput} format="+38(###) ###-##-##"  {...form.getInputProps('phone')} required
-                    label="Номер телефону"
-                    placeholder="+38(999) 999-99-99" />
-                <TextInput
-                    required
-                    label="ФІО"
-                    placeholder="Фамілія Ім'я По Батькові"
-                    {...form.getInputProps('fio')}
-                />
+                <div className={styles.Form}>
+                    <LoadingOverlay visible={loading} />
+                    <NumberFormat customInput={TextInput} format="+38(###) ###-##-##"  {...form.getInputProps('phone')} required
+                        label="Номер телефону"
+                        placeholder="+38(999) 999-99-99" />
+                    <TextInput
+                        required
+                        label="ФІО"
+                        placeholder="Фамілія Ім'я По Батькові"
+                        {...form.getInputProps('fio')}
+                    />
 
-                <TextInput
-                    required
-                    label="Адреса,Номер віділення нової пошти"
-                    placeholder="Фамілія Ім'я По Батькові"
-                    {...form.getInputProps('address')}
-                />
+                    <TextInput
+                        required
+                        label="Адреса,Номер віділення нової пошти"
+                        placeholder="Адреса,Номер віділення нової пошти"
+                        {...form.getInputProps('address')}
+                    />
 
-                <Group position="right" mt="md">
-                    <Button type="submit">Submit</Button>
-                </Group>
+                    <Group position="center" mt="md">
+                        <Button type="submit">Создать</Button>
+                    </Group>                    
+                </div>
             </form>
-        </Box>
+        </Box >
     )
 }

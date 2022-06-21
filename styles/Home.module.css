@@ -1,28 +1,61 @@
-.ImageList {  
-  display: grid; 
-  grid-template-columns: repeat(4,1fr);  
-  gap: 10px;
-  grid-auto-rows:450px;    
+.ImageList {
+  display: block;
+
 }
+
+.Image {
+  position: relative;
+  height: 375px;
+  width: 300px;
+}
+
+.Card {
+  display: inline-block;
+  background-color: rgb(240, 240, 249);
+  padding: 5px;
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.865);
+  width: 300px;
+  height: 500px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+}
+
+@media (max-width:650px) {
+  .Image {
+    position: relative;
+    height: 187px;
+    width: 150px;    
+  }
+
+  .Card {
+    width: 150px;
+    height: 320px;
+    font-size: small;
+
+  }
+}
+
 .Pagination {
   margin: 10px;
   padding-top: 10px;
 }
+
 .sortPagination {
+  display: flex;
   padding: 5px;
   margin-bottom: 5px;
-  width: fit-content;
 }
-.Card {
-  background-color:rgb(240, 240, 249);
-  grid-column: span 1;
-  padding: 5px;
-  overflow:hidden;
-  border: 1px solid rgba(255, 255, 255, 0.865);
-  width: 300px;
-  box-shadow: 3px 3px 3px rgba(0,0,0, 0.5);
-  border-radius: 6px;
+
+.sort {
+  display: flex;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: 10px;
+
 }
+
 .Card:hover {
   border: 1px solid burlywood;
 
@@ -33,40 +66,17 @@
   text-align: center;
   font-weight: 500;
 }
+
 .Price {
+  margin-top: 10px;
+  font-weight: 700;
   align-items: center;
   text-align: center;
 }
 
-@media  (max-width:1500px) {
-  .ImageList {  
-    grid-template-columns: repeat(3,1fr);
 
-  }
-}
-
-@media  (max-width:1200px) {
-  .ImageList {  
-    grid-template-columns: repeat(3,1fr);
-
-  }
-}
-@media  (max-width:1150px) {
-  .ImageList {  
-    grid-template-columns: repeat(2,1fr);
-
-  }
-}
-@media  (max-width:600px) {
-  .ImageList {  
-    display: block;
-   
+@media (max-width:650px) {
+  .ImageList {
     margin: 10px auto;
-
-  }
-  .Card {
-    margin: 10px auto;
-    
   }
 }
-

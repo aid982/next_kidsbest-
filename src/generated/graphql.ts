@@ -337,7 +337,7 @@ export type Mutation = {
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
-  /** Update an existing user */
+  /** Delete an existing user */
   deleteUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   /** Confirm an email users email address */
   emailConfirmation?: Maybe<UsersPermissionsLoginPayload>;
@@ -570,6 +570,8 @@ export type Order = {
   client?: Maybe<ClientEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']>;
   date?: Maybe<Scalars['DateTime']>;
+  fio?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   products?: Maybe<Scalars['JSON']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -598,9 +600,11 @@ export type OrderFiltersInput = {
   client?: InputMaybe<ClientFiltersInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   date?: InputMaybe<DateTimeFilterInput>;
+  fio?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<OrderFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<OrderFiltersInput>>>;
+  phone?: InputMaybe<StringFilterInput>;
   products?: InputMaybe<JsonFilterInput>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
@@ -610,6 +614,8 @@ export type OrderInput = {
   address?: InputMaybe<Scalars['String']>;
   client?: InputMaybe<Scalars['ID']>;
   date?: InputMaybe<Scalars['DateTime']>;
+  fio?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
   products?: InputMaybe<Scalars['JSON']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1341,6 +1347,8 @@ export type CreateOrderMutationVariables = Exact<{
   products?: InputMaybe<Scalars['JSON']>;
   client?: InputMaybe<Scalars['ID']>;
   address?: InputMaybe<Scalars['String']>;
+  fio?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -1474,9 +1482,9 @@ export const CreateClientDocument = gql`
 }
     `;
 export const CreateOrderDocument = gql`
-    mutation createOrder($date: DateTime, $products: JSON, $client: ID, $address: String) {
+    mutation createOrder($date: DateTime, $products: JSON, $client: ID, $address: String, $fio: String, $phone: String) {
   createOrder(
-    data: {products: $products, date: $date, client: $client, publishedAt: $date, address: $address}
+    data: {products: $products, date: $date, client: $client, publishedAt: $date, address: $address, fio: $fio, phone: $phone}
   ) {
     data {
       id

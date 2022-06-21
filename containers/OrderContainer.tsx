@@ -1,10 +1,13 @@
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useState } from 'react'
 import { useMutation } from 'react-query';
 import OrderComponent from '../components/OrderComponent'
 import { GlobalContext } from '../context/GlobalContext';
 import { graphQLClient, queryClient } from '../graphql-client';
 import { getSdk } from '../src/generated/graphql';
 import { productInCart } from '../utility/interfaces';
+import { showNotification } from '@mantine/notifications';
+
 
 type Props = {}
 type orderData = {
@@ -13,8 +16,11 @@ type orderData = {
 }
 
 export default function OrderContainer({ }: Props) {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const postOrder = async (orderData: orderData) => {
+        setLoading(true);
         try {
             console.log("Order data", orderData);
             const data = await findClient({ phone: orderData.phone });
@@ -34,6 +40,7 @@ export default function OrderContainer({ }: Props) {
                 // clientID = data.createClient?.data?.id as string; 
 
             }
+            console.log('orderData', orderData)
             const orderResultData = await createOrder({ ...orderData, client: clientID });
             console.log('creating order', orderResultData);
         } catch (error) {
@@ -41,22 +48,29 @@ export default function OrderContainer({ }: Props) {
         }
 
     }
-    const { productsInCart, dispatch } = React.useContext(GlobalContext);
+    const { cart, dispatch } = React.useContext(GlobalContext);
     const { createOrder, findClient, updateClient, createClient } = getSdk(graphQLClient);
     const { mutate, isLoading, error } = useMutation(postOrder, {
         onSuccess: (data: any) => {
-            console.log('Mut success', data);
-            //  dispatch({ type: 'CREATE_ORDER', data: "" });
+            setLoading(false);
+            showNotification({
+                title: 'Заказ успешно создан!!',
+                message: 'Менеджер с вами свяжется',
+              })
+            dispatch({ type: 'ORDER_CREATED', data: "" });
+            router.push({
+                pathname: '/',
+            })
 
         }
     });
-    const handleSubmit = (values: orderData) => {       
+    const handleSubmit = (values: orderData) => {
         console.log('Form values', values);
-        mutate({ ...values, date: new Date(), products: productsInCart});
+        mutate({ ...values, date: new Date(), products: cart.productsInCart });
 
     }
 
     return (
-        <OrderComponent onSubmit={handleSubmit} />
+        <OrderComponent loading={loading} onSubmit={handleSubmit} />
     )
 }

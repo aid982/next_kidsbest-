@@ -7,6 +7,7 @@ import { Hydrate, QueryClientProvider } from 'react-query';
 import { queryClient } from '../graphql-client';
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 interface MyAppProps extends AppProps {
 
 }
@@ -25,17 +26,18 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
             withGlobalStyles
             withNormalizeCSS
             theme={{
-              breakpoints: {                
-                md: 1500,
+              breakpoints: {
+                sm: 950,
               },
             }}
           >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <NotificationsProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </NotificationsProvider>
           </MantineProvider>
         </GlobalContextProvider>
-
       </Hydrate>
       <ReactQueryDevtools />
     </QueryClientProvider >

@@ -9,9 +9,19 @@ import { PaginationArg, ProductFiltersInput } from '../src/generated/graphql';
 
 export async function getServerSideProps({ query }: { query: any }) {
   console.log('Query', query)
-  let categories, product_sizes;
+  type product_size_type =  {
+    size?:{},
+    qty?:{}
+  }
+  let sort = ['price:asc'];
+  let categories;
+  let product_sizes:product_size_type;
   let forBoys = false;
   let forGirls = false;
+  if (query["sort"]) {
+    sort[0] = query["sort"];
+  }
+  // Filter by Category
   if (query["categories"]) {
     categories = {
       "title": {
@@ -19,17 +29,18 @@ export async function getServerSideProps({ query }: { query: any }) {
       }
     }
   }
+  // Filter for products that are in stock
+  product_sizes =
+  {
+    "qty": { "gt": 0 }
+  }
+  // filter by size
   if (query["sizes"]) {
-    product_sizes =
-    {
-      "size": {
-        "name": {
-          "in": query["sizes"]
-        }
+    product_sizes.size = {
+      "name": {
+        "in": query["sizes"]
       }
-
     }
-
   };
   type filter = {
     categories?: {},
@@ -63,15 +74,16 @@ export async function getServerSideProps({ query }: { query: any }) {
 
   const queryClient = new QueryClient()
 
-  let pagination = { pageSize: 1, page: 1 };
+  let pagination = { pageSize: 20, page: 1 };
   if (query.page) {
     pagination.page = Number(query.page);
   }
 
-  await queryClient.prefetchQuery(['homePage', pagination.page], () => fetchProductsSizes(pagination, filters))
+  await queryClient.prefetchQuery(['homePage', pagination.page], () => fetchProductsSizes(pagination, filters,sort))
 
   return {
     props: {
+      sort,
       forBoys,
       forGirls,
       filters,
@@ -82,12 +94,12 @@ export async function getServerSideProps({ query }: { query: any }) {
 }
 
 
-const Home: NextPage<{ pagination: PaginationArg, filters: ProductFiltersInput, forBoys: boolean, forGirls: boolean }> = ({ pagination, filters, forGirls, forBoys }) => {
-  const { data, isLoading } = useProductsSizes(pagination, filters);
+const Home: NextPage<{ pagination: PaginationArg, filters: ProductFiltersInput, forBoys: boolean, forGirls: boolean,sort:string[] }> = ({ pagination, filters, forGirls, forBoys,sort }) => {
+  const { data, isLoading } = useProductsSizes(pagination, filters,sort);
 
 
   return (
-    <HomeContainer forBoys={forBoys} forGirls={forGirls} paginationData={data!.paginationData} categories={data!.categories} sizes={data!.sizes} products={data!.products} />
+    <HomeContainer sort={sort[0]}  forBoys={forBoys} forGirls={forGirls} paginationData={data!.paginationData} categories={data!.categories} sizes={data!.sizes} products={data!.products} />
   )
 }
 

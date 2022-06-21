@@ -12,9 +12,11 @@
     "gen": "graphql-codegen"
   },
   "dependencies": {
-    "@mantine/core": "^4.2.6",
+    "@mantine/core": "^4.2.10",
     "@mantine/form": "^4.2.6",
-    "@mantine/hooks": "^4.2.6",
+    "@mantine/hooks": "^4.2.10",
+    "@mantine/notifications": "^4.2.10",
+    "@modulz/radix-icons": "^4.0.0",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
     "next": "12.1.6",

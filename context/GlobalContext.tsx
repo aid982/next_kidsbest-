@@ -1,54 +1,53 @@
 import { createContext, Dispatch, useEffect, useReducer, useState } from "react";
 import { cartReducer } from "../reducers/cartReducer";
+import { Cart, productInCart } from "../utility/interfaces";
 
-import { productInCart } from "../utility/interfaces";
 
-
-export type GlobalCtxInterface = {
-
+export type GlobalCtxInterface = {  
     mobileOpen: boolean;
     toggleMobileOpen: () => void;
-    productsInCart: productInCart[];
-    dispatch: Dispatch<{ type: any; data: productInCart | productInCart[]|string }>;
+    cart: Cart;
+    dispatch: Dispatch<{ type: string; data: productInCart | productInCart[]|string }>;
   
 }
 
 
-export const GlobalContext = createContext<GlobalCtxInterface>({ mobileOpen: false, toggleMobileOpen: () => { }, productsInCart: [], dispatch: () => { }});
+export const GlobalContext = createContext<GlobalCtxInterface>({ mobileOpen: false, toggleMobileOpen: () => { }, cart: {totalSum:0,productsInCart:[]}, dispatch: () => { }});
 
 interface GlobalContextProviderProps {
     children?: JSX.Element | JSX.Element[];
 }
 
 const GlobalContextProvider: React.FunctionComponent<GlobalContextProviderProps> = (props) => {
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const [productsInCart, dispatch] = useReducer(cartReducer, [], () => {
-        return [];
+    const [mobileOpen, setMobileOpen] = useState(false);    
+    const [cart, dispatch] = useReducer(cartReducer, {totalSum:0,productsInCart:[]}, () => {
+        return  {totalSum:0,productsInCart:[]};
     });
 
 
     const toggleMobileOpen = () => {
+        console.log(mobileOpen);
         setMobileOpen(!mobileOpen);
     }
 
-    useEffect(() => {
-        let localData = localStorage.getItem('cart');
+    useEffect(() => {        
+        let localData = localStorage.getItem('cart');             
+        console.log('cart',localData);
         if (localData) {
             localData = JSON.parse(localData || '');
             console.log('localData', localData);
-            if ((localData) && (localData.length > 0)) {
+            console.log('INIT',localData)
+            if (localData) {
                 dispatch({ type: 'INIT_CART', data: localData || [] });
             }
         }
 
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(productsInCart));
-    }, [productsInCart]);
 
 
-    return (<GlobalContext.Provider value={{ mobileOpen, toggleMobileOpen, productsInCart, dispatch }}>{props.children}</GlobalContext.Provider>);
+
+    return (<GlobalContext.Provider value={{ mobileOpen, toggleMobileOpen, cart, dispatch }}>{props.children}</GlobalContext.Provider>);
 };
 
 export default GlobalContextProvider;
