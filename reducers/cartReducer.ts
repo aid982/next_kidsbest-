@@ -26,8 +26,8 @@ export const cartReducer = (state: Cart, action: { type: string; data: productIn
         productsInCart: [],
         totalSum: 0
       }
-      updateLocalStorage(cart);
-      return cart;
+      updateLocalStorage(state);
+      return state;
     case 'INIT_CART':      
       return {...action.data as Cart }
     case 'ADD_PRODUCT_TO_CART':

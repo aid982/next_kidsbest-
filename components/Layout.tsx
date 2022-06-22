@@ -27,8 +27,7 @@ export default function Layout({ children }: Props) {
 
   return (
     <div>
-      <Head>
-        <title>Kidsbest</title>
+      <Head>        
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <AppShell

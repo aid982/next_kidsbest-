@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { GlobalContext } from '../context/GlobalContext';
 import { ArrowUpIcon } from '@modulz/radix-icons';
 import { useWindowScroll } from '@mantine/hooks';
+import Head from 'next/head';
 
 
 
@@ -34,6 +35,11 @@ export default function HomeComponent(props: HomeComponentProps) {
 
   return (
     <div>
+       <Head>
+        <title>Интернет магазин брендовой детской одежды Carters</title>
+        <meta name="keywords" content="одежда,Oldnavy,Carters,0-7 лет,брендовая,детская,Киев,Украина,купить" />
+        <meta name="description" content="Интернет магазин,kidsbest,предлагает купить брендовую детскую одежду Carters недорого в Киеве и Украине" />
+      </Head>
       <Navbar
         p="md"
         hiddenBreakpoint="sm"
@@ -84,7 +90,7 @@ export default function HomeComponent(props: HomeComponentProps) {
             <Link href={'/product/' + item.id} key={item.code}>
               <div className={styles.Card}>
                 <div className={styles.Image}>                  
-                    <Image  src={'/../img/_' + item.code + '_large.jpg'} alt={item.name} layout='fill' objectFit='cover' />                    
+                    <Image  src={'/img/_' + item.code + '_large.jpg'} alt={item.name} layout='fill' objectFit='cover' />                    
                 </div>
                 <div className={styles.Title}>{item.name}</div>
                 <div className={styles.Price}>

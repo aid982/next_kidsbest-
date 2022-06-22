@@ -31,7 +31,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
               },
             }}
           >
-            <NotificationsProvider>
+            <NotificationsProvider position="bottom-center">
               <Layout>
                 <Component {...pageProps} />
               </Layout>

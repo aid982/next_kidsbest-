@@ -1,7 +1,7 @@
 import React from 'react'
 import { GlobalContext } from '../context/GlobalContext';
 import styles from '../styles/Cart.module.css'
-import {   Card, Image, Avatar, Text, Title,  Divider,  Button, CloseButton, Box  } from "@mantine/core";
+import { Card, Image, Avatar, Text, Title, Divider, Button, CloseButton, Box } from "@mantine/core";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { showNotification } from '@mantine/notifications';
@@ -12,7 +12,7 @@ type Props = {}
 
 export default function CartComponent({ }: Props) {
 
-  const { cart, dispatch } = React.useContext(GlobalContext);  
+  const { cart, dispatch } = React.useContext(GlobalContext);
 
   const router = useRouter();
 
@@ -48,19 +48,22 @@ export default function CartComponent({ }: Props) {
 
       {
         cart.productsInCart.map((product) => {
-          return <Card key={product.id + product.size} className={styles.CartList} p={10}>
-            <div className={styles.Avatar_text}>
-              <Avatar size={40} src={'/img/_' + product.code + '_large.jpg'} alt={product.id + product.size} />
-              <Text p={5} >
-                {product.name}
-              </Text>
-              <Text p={5}>
-                {' Размер : ' + product.size + ' Цена: ' + product.price + ' грн. кво: ' + product.qty}
-              </Text>
-            </div>
-            {/*<Button type="button" id={product.id} key={product.id} leftIcon={<ShoppingCartOff />} className={styles.deleteButton} onClick={handleRemoveFormCart}><Text>Удалить</Text></Button>*/}
-            <CloseButton id={product.id + product.size} key={product.id} title="Удалить товар" size="xl" iconSize={20} onClick={handleRemoveFormCart} />
-          </Card>
+          return <Link href={'/product/' + product.id} key={product.code}>
+            <Card key={product.id + product.size} className={styles.CartList} p={10}>
+              <div className={styles.Avatar_text}>
+
+                <Avatar size={40} src={'/img/_' + product.code + '_large.jpg'} alt={product.id + product.size} />
+                <Text p={5} >
+                  {product.name}
+                </Text>
+                <Text p={5}>
+                  {' Размер : ' + product.size + ' Цена: ' + product.price + ' грн. кво: ' + product.qty}
+                </Text>
+
+              </div>
+              {/*<Button type="button" id={product.id} key={product.id} leftIcon={<ShoppingCartOff />} className={styles.deleteButton} onClick={handleRemoveFormCart}><Text>Удалить</Text></Button>*/}
+              <CloseButton id={product.id + product.size} key={product.id} title="Удалить товар" size="xl" iconSize={20} onClick={handleRemoveFormCart} />
+            </Card></Link>
 
 
         }
@@ -75,12 +78,7 @@ export default function CartComponent({ }: Props) {
           Вернуться к покупкам
         </Text>
       </Link>
-
-
       <Button style={{ display: 'block', margin: '10px auto' }} onClick={handleCreateOrder}>Створити заказ</Button>
-
-    
-
 
     </Box >
   )
